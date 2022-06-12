@@ -1,6 +1,16 @@
+#Projeto Final - Crivo de Eratostenes
 #Leonardo Braga e Rafael Freitas
 
-.data
+.data	#inicia a secao de dados
+
+insert:
+		.asciiz "Insira 5 números de 1 a 100: "
+		
+primeNumbers:
+		.asciiz "Dos números inseridos, esses são primos: "	
+		
+lineBreak:
+		.asciiz " "
 
 input:
 		.align 2			#align do tipo word para int
@@ -13,8 +23,9 @@ output:
 eratosthenes:
 		.align 2			#align do tipo word para int
 		.space 400			#array 100 ints
-		
-.text
+				
+.text	#inicia a secao de instrucoes
+
 		li $t7, 20			#tamanho array entrada
 		move $t0, $zero			#registrador que carregara o indice do eratosthenes que contera os numeros primos
 		move $t1, $zero 		#registrador que carregara o indice dos numeros nao primos que terao valor 1 no eratosthenes
@@ -78,6 +89,10 @@ exitEratosthenes:
 		move $t0, $zero 		#indice dos primos
 		li $t7, 20			#tamanho do array de entrada
 
+		li $v0, 4
+		la $a0, insert			#imprime string na tela
+		syscall
+
 #esse bloco de codigo e responsavel por receber a entrada do input
 loopInput:
 		beq $t0, $t7, endLoopInput
@@ -127,12 +142,21 @@ insertOutput:
 preLoopOutput:
 		move $t1, $zero
 
-#loop responsavel pela saida do programa
+		li $v0, 4
+		la $a0, primeNumbers		#imprime string na tela
+		syscall
+		
+#loop responsavel pela saida do programa		
 loopOutput:
-		bgt $t1, $t4, end
+		li $v0, 4
+		la $a0, lineBreak		#imprime string na tela
+		syscall
+		bgt $t1, $t4, end		#finaliza o programa
 		li $v0, 1
 		lw $a0, output($t1)
 		syscall
 		addi $t1, $t1, 4
 		j loopOutput
+
+#acaba o programa
 end:
